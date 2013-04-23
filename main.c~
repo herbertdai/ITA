@@ -1,0 +1,63 @@
+/*
+ * main.c
+ * For code in Introduction to Algorithm.
+ * herbertd
+ * 20100816
+ */
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "randomize/gen_rand_array.h"
+#include "sorts/quick_sort/quick_sort.h"
+#include "sorts/heap_sort/heap_sort.h"
+
+#define  ARRAY_SIZE 10
+
+int print_array(int array[], int array_size)
+{
+   int i = 0;
+   printf("\n----------------------------------------\n");
+   for(i=0; i<array_size; i++){
+      printf("%d, ", array[i]);
+   }
+   printf("\n----------------------------------------\n");
+   return 1;
+}
+
+int main(int *argc, int **argv)
+{
+   int i = 0;
+   int A[ARRAY_SIZE]; 
+   ////////////////////////
+   //Heap sort
+   ///////////////////////
+#if 1
+   printf("Running ITAlgoritms>>>>>>>>>>>\n");
+   printf("\nNow sorting by heap sort>>>>>>>>>>\n");
+   for(i=0; i<ARRAY_SIZE; i++){
+      A[i] = i;
+   }
+   randomize_in_place(A, ARRAY_SIZE);
+   printf("\nRandomized array is :  ");
+#endif
+   print_array(A, ARRAY_SIZE);
+   heap_sort(A, ARRAY_SIZE);
+   printf("\nSorted array is :  ");
+   print_array(A, ARRAY_SIZE);
+   
+   ////////////////////////
+   //Quick sort
+   ///////////////////////
+   printf("\nNow sorting by quick sort>>>>>>>>>>\n");
+   sleep(1);
+   randomize_in_place(A, ARRAY_SIZE);
+   printf("\nRandomized array is :  ");
+   print_array(A, ARRAY_SIZE);
+   quick_sort(A, 1, ARRAY_SIZE);
+   printf("\nSorted array is :  ");
+   print_array(A, ARRAY_SIZE);
+
+   
+   return 1;
+}
