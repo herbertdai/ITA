@@ -27,3 +27,32 @@ void insert_sort(int * A, int arraySize) {
 
   }
 }
+
+/**
+ * Counting sort, Thelta(n)
+ * @param k sorted numbers is [0, k)
+ */
+void counting_sort(int *ArrayToSort, int *OutputArray, int arraySize, int k) {
+  int *A = ArrayToSort;
+  int *B = OutputArray;
+  int C[k]; //[0, k)
+  int i = 0, j = 0;
+
+  for (i=0; i<k; i++) {
+    C[i] = 0;
+  }
+
+  for (j=0; j<arraySize; j++) {
+    C[A[j]]++;
+  } // Now C[i] is the item count equals i;
+
+  for (i=1; i<k; i++) {
+    C[i] = C[i] + C[i - 1];
+  } // Now C[i] is the number count of <= i
+
+  for (j=arraySize-1; j>=0; j--) {
+    B[C[A[j]] - 1] = A[j];
+    C[A[j]] = C[A[j]] - 1;
+  }
+
+}
