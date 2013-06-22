@@ -15,7 +15,7 @@
 #include "sorts/heap_sort/heap_sort.h"
 #include "sorts/normal_sort.h"
 
-#define  ARRAY_SIZE 120
+#define  ARRAY_SIZE 999000
 
 int A[ARRAY_SIZE];
 
@@ -30,8 +30,8 @@ int print_array(int array[], int array_size)
   int i = 0;
   printf("\n----------------------------------------\n");
   for(i=0; i<array_size; i++){
-    //    if (i%1000 == 0)		 
-    printf("%d, ", array[i]);
+      if (i%1000 == 0)		 
+	  printf("%d, ", array[i]);
 
   }
   printf("\n----------------------------------------\n");
@@ -109,7 +109,7 @@ void testCountingSort() {
    int outputArray[ARRAY_SIZE];
 
    startProfileTime();
-   randomize_in_place(A, ARRAY_SIZE);
+   randomize_maxnum(A, ARRAY_SIZE, 256);
    print_array(A, ARRAY_SIZE);
    endProfileTime("Gen random array");
 
@@ -129,7 +129,7 @@ int main(int *argc, int **argv)
 
    testQuickSort();
 
-   testInsertSort();
+//   testInsertSort();
 
    testCountingSort();
 

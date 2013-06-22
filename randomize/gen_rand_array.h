@@ -14,6 +14,14 @@
  * @return  1	  random success
  *	    0	  fail
  */
-int * randomize_in_place(int* Array, int lenth);
-      
-      
+int randomize_in_place(int* Array, int lenth);
+
+/*
+ * randomize the array
+ * @param[in]:Array	  array to randomize
+ * @param[in]:lenth	  lenth of array to randomize
+ * @param[in]:maxNum	  maxNum of generated randoms.
+ * @return  1	  random success
+ *	    0	  fail
+ */
+int randomize_maxnum(int* Array, int lenth, int maxNum);      
