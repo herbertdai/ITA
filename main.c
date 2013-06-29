@@ -106,7 +106,7 @@ void testCountingSort() {
    printf("\nNow is Counting sort>>>>>>>>>>\n");
    
    int maxNumber = ARRAY_SIZE;
-   int outputArray[ARRAY_SIZE];
+
 
    startProfileTime();
    randomize_maxnum(A, ARRAY_SIZE, 256);
@@ -114,11 +114,11 @@ void testCountingSort() {
    endProfileTime("Gen random array");
 
    startProfileTime();
-   counting_sort(A, outputArray, ARRAY_SIZE, maxNumber);
+   counting_sort(A, NULL, ARRAY_SIZE, maxNumber);
    endProfileTime("counting sort");
 
    printf("\nSorted array is :  ");
-   print_array(outputArray, ARRAY_SIZE);
+   print_array(A, ARRAY_SIZE);
 }
 
 void testRadixSort() {
@@ -148,7 +148,7 @@ int main(int *argc, int **argv)
 
 //   testInsertSort();
 
-//   testCountingSort();
+   testCountingSort();
 
    testRadixSort();
 

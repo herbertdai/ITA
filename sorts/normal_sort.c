@@ -35,7 +35,8 @@ void insert_sort(int * A, int arraySize) {
  */
 void counting_sort(int *ArrayToSort, int *OutputArray, int arraySize, int k) {
   int *A = ArrayToSort;
-  int *B = OutputArray;
+  int * B = (int*) malloc(arraySize * sizeof(int));
+
   int C[k]; //[0, k)
   int i = 0, j = 0;
 
@@ -55,6 +56,15 @@ void counting_sort(int *ArrayToSort, int *OutputArray, int arraySize, int k) {
   for (j=0; j<arraySize; j++) {
     B[C[A[j]] - 1] = A[j];
     C[A[j]] = C[A[j]] - 1;
+  }
+
+  for (j=0; j<arraySize; j++) {
+      A[j] = B[j];
+  }
+
+  if (B != NULL) {
+      free(B);
+      B = NULL;
   }
 
 }
