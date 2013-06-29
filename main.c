@@ -15,7 +15,7 @@
 #include "sorts/heap_sort/heap_sort.h"
 #include "sorts/normal_sort.h"
 
-#define  ARRAY_SIZE 999000
+#define  ARRAY_SIZE 1900000
 
 int A[ARRAY_SIZE];
 
@@ -30,7 +30,7 @@ int print_array(int array[], int array_size)
   int i = 0;
   printf("\n----------------------------------------\n");
   for(i=0; i<array_size; i++){
-      if (i%1000 == 0)		 
+      if (i%10000 == 0)		 
 	  printf("%d, ", array[i]);
 
   }
@@ -120,6 +120,23 @@ void testCountingSort() {
    printf("\nSorted array is :  ");
    print_array(outputArray, ARRAY_SIZE);
 }
+
+void testRadixSort() {
+   printf("\nNow is Radix sort>>>>>>>>>>\n");
+   
+   startProfileTime();
+   randomize_maxnum(A, ARRAY_SIZE, 256);
+   print_array(A, ARRAY_SIZE);
+   endProfileTime("Gen random array");
+
+   startProfileTime();
+   radixSort(A, 0, ARRAY_SIZE - 1, 5, 10); 
+   endProfileTime("Radix sort");
+
+   printf("\nSorted array is :  ");
+   print_array(A, ARRAY_SIZE);
+
+}
  
 int main(int *argc, int **argv)
 {
@@ -131,7 +148,9 @@ int main(int *argc, int **argv)
 
 //   testInsertSort();
 
-   testCountingSort();
+//   testCountingSort();
+
+   testRadixSort();
 
    return 1;
 }
