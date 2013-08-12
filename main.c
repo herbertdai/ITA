@@ -14,6 +14,8 @@
 #include "sorts/quick_sort/quick_sort.h"
 #include "sorts/heap_sort/heap_sort.h"
 #include "sorts/normal_sort.h"
+#include "BSTree/binary_tree.h"
+
 
 #define  ARRAY_SIZE 1900000
 
@@ -137,11 +139,7 @@ void testRadixSort() {
    print_array(A, ARRAY_SIZE);
 
 }
- 
-int main(int *argc, int **argv)
-{
-   printf("Running ITAlgoritms>>>>>>>>>>>\n");
-
+void test_sorts() {
    testHeapSort();   
 
    testQuickSort();
@@ -151,6 +149,14 @@ int main(int *argc, int **argv)
    testCountingSort();
 
    testRadixSort();
+
+}
+ 
+int main(int *argc, int **argv)
+{
+   printf("Running ITAlgoritms>>>>>>>>>>>\n");
+   
+   test_sorts();
 
    return 1;
 }

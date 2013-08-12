@@ -1,4 +1,5 @@
-OBJ = main.o gen_rand_array.o heap_sort.o quick_sort.o normal_sort.o
+OBJ = main.o gen_rand_array.o heap_sort.o quick_sort.o normal_sort.o binary_tree.o
+
 ita: $(OBJ)
 	cc -g $(OBJ) -o ita
 
@@ -13,7 +14,11 @@ heap_sort.o:
 quick_sort.o:
 	cc -c ./sorts/quick_sort/quick_sort.c
 
-normal_sort.o: ./sorts/normal_sort.c
+normal_sort.o:
 	cc -c ./sorts/normal_sort.c
+
+binary_tree.o:
+	cc -c ./BSTree/binary_tree.c
+
 clean:
 	rm ita *.o
