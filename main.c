@@ -151,12 +151,22 @@ void test_sorts() {
    testRadixSort();
 
 }
+
+void testBSTree() {
+    tree_t * tree = tree_create();
+    tree_traverse(tree->root, my_treenode_key_traverse);
+    tree_destroy(tree, my_treenode_data_free);
+}
  
 int main(int *argc, int **argv)
 {
    printf("Running ITAlgoritms>>>>>>>>>>>\n");
-   
+
+#if 0
    test_sorts();
+#endif
+
+   testBSTree();
 
    return 1;
 }

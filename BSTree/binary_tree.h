@@ -17,7 +17,9 @@ extern "C" {
 
 typedef struct _treenode_t
 {
- struct _treenode_t *next;
+ struct _treenode_t *left_child;
+ struct _treenode_t *right_child;
+
  union{
   void            *data;
   struct _tree_t *tree;
@@ -55,13 +57,13 @@ static void my_treenode_data_free(treenode_t *node)
  */
 static void my_treenode_key_traverse(treenode_t *node)
 {
- printf("    key=%ld/n", node->key);
+ printf("    key=%ld\n", node->key);
 }
 
 /**
  * Traverses a tree, applied callback functionn for each node
  */
-void tree_traverse(tree_t *in_tree, pfunc_tree_callback pfcb_traversenode);
+int tree_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
 
 /**
  * Allocates a empty tree from heap, this creates a new tree 
@@ -81,8 +83,7 @@ treenode_t* tree_node_create(void* data);
 /** 
  * Free a tree node and it&apos;s associated nodes, the freed node cannot be used later
  */
-void
-tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
+void tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
 
 
 
