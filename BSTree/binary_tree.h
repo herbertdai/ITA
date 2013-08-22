@@ -61,9 +61,14 @@ static void my_treenode_key_traverse(treenode_t *node)
 }
 
 /**
- * Traverses a tree, applied callback functionn for each node
+ * Traverses a tree in preorder: root, left, right, applied callback functionn for each node
  */
-int tree_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
+int tree_preorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
+
+/**
+ * Traverses a tree in post order: left, right,root, applied callback functionn for each node
+ */
+int tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
 
 /**
  * Allocates a empty tree from heap, this creates a new tree 
@@ -74,6 +79,8 @@ tree_t* tree_create();
  * Clears a tree and free memory, the tree cannot be used later
  */
 void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata);
+
+int  tree_postorder_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
 
 /** 
  * Creates a new node assigned with data, not allocates for data

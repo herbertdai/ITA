@@ -154,10 +154,17 @@ void test_sorts() {
 
 void testBSTree() {
     tree_t * tree = tree_create();
-    tree_traverse(tree->root, my_treenode_key_traverse);
-    tree_destroy(tree, my_treenode_data_free);
+    tree_preorder_traverse(tree->root, my_treenode_key_traverse);
+    tree_destroy(tree, NULL);
 }
  
+typedef struct foo {
+    short b;
+    long i;
+    char a;
+    char c;
+}foo_;
+
 int main(int *argc, int **argv)
 {
    printf("Running ITAlgoritms>>>>>>>>>>>\n");
@@ -167,7 +174,8 @@ int main(int *argc, int **argv)
 #endif
 
    testBSTree();
-
+   
+   printf("foo size =%d\n", sizeof(foo_));
    return 1;
 }
 

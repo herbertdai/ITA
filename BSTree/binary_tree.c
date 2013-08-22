@@ -51,29 +51,69 @@ treenode_t* tree_node_create(void* data) {
  * Clears a tree and free memory, the tree cannot be used later
  */
 void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata) {
-    //TODO: 
-    //    tree_traverse(in_tree, tree_node_free);
+
+    tree_clean(in_tree->root, pfcb_freedata);
     //TODO: free tree itself. dwy
+    free(in_tree);
+
     printf("Tree destory.\n");
 }
 
 
 /**
- * Traverses a tree, applied callback functionn for each node
+ * Traverses a tree in root first older, applied callback functionn for each node
  */
-int  tree_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
+int  tree_preorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
     if (NULL == tree_root) 
         return -1;
 
-    if (tree_root == NULL) 
-        return 0;
-    
-    //Visit the root
-    pfcb_traversenode(tree_root);
+     //Visit the root
+    if (pfcb_traversenode) 
+        pfcb_traversenode(tree_root);
 
     //Visit left child
-    tree_traverse(tree_root->left_child, pfcb_traversenode);
+    tree_preorder_traverse(tree_root->left_child, pfcb_traversenode);
 
     //Visit right child
-    tree_traverse(tree_root->right_child, pfcb_traversenode);
+    tree_preorder_traverse(tree_root->right_child, pfcb_traversenode);
+}
+
+/**
+ * Traverses a tree in root last older, applied callback functionn for each node
+ */
+int  tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
+    if (NULL == tree_root) 
+        return -1;
+
+      //Visit left child
+    tree_postorder_traverse(tree_root->left_child, pfcb_traversenode);
+
+    //Visit right child
+    tree_postorder_traverse(tree_root->right_child, pfcb_traversenode);
+
+    //Visit the root
+    if (pfcb_traversenode) 
+        pfcb_traversenode(tree_root);
+
+}
+
+/**
+ * Traverses a tree and clean every node, applied callback function for each node for free the memory if needed.
+ */
+int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
+    if (NULL == tree_root) 
+        return -1;
+
+    //Visit left child
+    tree_clean(tree_root->left_child, pfcb_traversenode);
+
+    //Visit right child
+    tree_clean(tree_root->right_child, pfcb_traversenode);
+
+    //Visit the root
+    if (pfcb_traversenode) 
+        pfcb_traversenode(tree_root);
+
+    printf("Clean node=%p", tree_root);
+    free(tree_root);
 }
