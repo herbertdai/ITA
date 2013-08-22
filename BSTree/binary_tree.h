@@ -80,7 +80,7 @@ tree_t* tree_create();
  */
 void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata);
 
-int  tree_postorder_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
+int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
 
 /** 
  * Creates a new node assigned with data, not allocates for data
@@ -91,9 +91,6 @@ treenode_t* tree_node_create(void* data);
  * Free a tree node and it&apos;s associated nodes, the freed node cannot be used later
  */
 void tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
-
-
-
 
 
 #ifdef __cplusplus

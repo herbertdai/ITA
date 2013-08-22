@@ -154,7 +154,12 @@ void test_sorts() {
 
 void testBSTree() {
     tree_t * tree = tree_create();
+
+    printf("\nPre order traverse:\n");
     tree_preorder_traverse(tree->root, my_treenode_key_traverse);
+
+    printf("\nPost order traverse:\n");
+    tree_postorder_traverse(tree->root, my_treenode_key_traverse);
     tree_destroy(tree, NULL);
 }
  

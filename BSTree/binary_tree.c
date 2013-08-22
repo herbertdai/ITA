@@ -114,6 +114,6 @@ int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
     if (pfcb_traversenode) 
         pfcb_traversenode(tree_root);
 
-    printf("Clean node=%p", tree_root);
+    printf("Clean node=%p\n", tree_root);
     free(tree_root);
 }
