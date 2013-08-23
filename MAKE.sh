@@ -2,3 +2,5 @@
 make clean
 
 make
+
+./ita

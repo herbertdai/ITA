@@ -71,9 +71,19 @@ int tree_preorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_trave
 int tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
 
 /**
+ * Traverses a tree in order: left, root, right, applied callback functionn for each node
+ */
+int tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
+
+/**
  * Allocates a empty tree from heap, this creates a new tree 
  */
 tree_t* tree_create();
+
+/**
+ * Add node to a properiate position, smaller to left, bigger to right
+ */
+void add_node(treenode_t *root, treenode_t *new_node);
 
 /** 
  * Clears a tree and free memory, the tree cannot be used later

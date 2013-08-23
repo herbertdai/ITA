@@ -160,6 +160,10 @@ void testBSTree() {
 
     printf("\nPost order traverse:\n");
     tree_postorder_traverse(tree->root, my_treenode_key_traverse);
+
+    printf("\nIn order traverse:\n");
+    tree_inorder_traverse(tree->root, my_treenode_key_traverse);
+
     tree_destroy(tree, NULL);
 }
  
