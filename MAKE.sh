@@ -3,4 +3,3 @@ make clean
 
 make
 
-./ita

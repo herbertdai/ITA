@@ -80,6 +80,8 @@ int tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
  */
 tree_t* tree_create();
 
+    tree_t* tree_create(int * TREE_DATAS, int data_size);
+
 /**
  * Add node to a properiate position, smaller to left, bigger to right
  */
@@ -97,11 +99,20 @@ int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode);
  */
 treenode_t* tree_node_create(void* data);
 
+    /**
+     * Create a new node with the long key
+     */
+    treenode_t* tree_node_create_with_key(long key);
+
 /** 
  * Free a tree node and it&apos;s associated nodes, the freed node cannot be used later
  */
 void tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
 
+    /**
+     * Binary tree search a key
+     */
+    treenode_t * tree_search(treenode_t * tree_root, int key);
 
 #ifdef __cplusplus
 }

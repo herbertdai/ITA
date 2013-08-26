@@ -19,15 +19,15 @@ int randomize_maxnum(int* Array, int lenth, int maxNum){
     srand((int)time(0));
 
     for (i=0; i<lenth; i++){
-	Array[i] = (int)(rand() % maxNum);
+        Array[i] = (int)(rand() % maxNum);
     }
 
     for (i=0; i<lenth; i++){
-	//Swap a[i] and a[random(i,n)]
-	temp = Array[i];
-	random_index = i + (int)(rand() % (lenth - i));
-	Array[i] = Array[random_index];
-	Array[random_index] = temp;
+        //Swap a[i] and a[random(i,n)]
+        temp = Array[i];
+        random_index = (int)(rand() % (lenth - i));
+        Array[i] = Array[random_index];
+        Array[random_index] = temp;
     }
     return 1;
 }

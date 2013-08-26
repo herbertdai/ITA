@@ -17,7 +17,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 1900000
+#define  ARRAY_SIZE 1000000
 
 int A[ARRAY_SIZE];
 
@@ -32,7 +32,7 @@ int print_array(int array[], int array_size)
   int i = 0;
   printf("\n----------------------------------------\n");
   for(i=0; i<array_size; i++){
-      if (i%10000 == 0)		 
+      //      if (i%10000 == 0)		 
 	  printf("%d, ", array[i]);
 
   }
@@ -153,8 +153,15 @@ void test_sorts() {
 }
 
 void testBSTree() {
-    tree_t * tree = tree_create();
 
+    printf("\nNow is Create Binary tree with node size %d >>>>>>>>>>\n", ARRAY_SIZE);
+    randomize_in_place(A, ARRAY_SIZE);
+
+    startProfileTime();
+    tree_t * tree = tree_create(A, ARRAY_SIZE);
+    endProfileTime("Create Binary search tree ");
+
+#if 0
     printf("\nPre order traverse:\n");
     tree_preorder_traverse(tree->root, my_treenode_key_traverse);
 
@@ -163,6 +170,19 @@ void testBSTree() {
 
     printf("\nIn order traverse:\n");
     tree_inorder_traverse(tree->root, my_treenode_key_traverse);
+#endif
+
+    int key = 150;
+    startProfileTime();
+    treenode_t * search_result = tree_search(tree->root, key);
+    endProfileTime("Binary tree search");
+    
+    if (search_result != NULL) {
+        printf("Found key:%d\n", key);
+    } else {
+        printf(" Not found key:%d\n", key);
+    }
+
 
     tree_destroy(tree, NULL);
 }
