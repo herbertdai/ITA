@@ -165,3 +165,33 @@ treenode_t * tree_search(treenode_t * tree_root, int key) {
     }
 
 }
+
+/* None recursion traverse From wiki:
+visit(root)
+    prev    := null
+    current := root
+    next    := null
+    
+    while current != null
+        if prev == current.parent //if we can go left
+            prev := current
+            next := current.left
+        if next == null or prev == current.left // if left is empty and Pre is going from left, dump and prepare to go right
+            print current.value
+            prev := current
+            next := current.right
+        if next == null or prev == current.right // If we can't go right (leaf) and previous is right, prepare to go back to parent.
+            prev := current
+            next := current.parent
+        current := next
+*/
+
+void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
+    treenode_t *cur = tree_root;
+    
+    //    while (true) {
+        
+    //    }
+}
+
+
