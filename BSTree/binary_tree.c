@@ -23,7 +23,6 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
     this_tree->root = new_node;
     
     for (i=1; i<data_size; i++) {
-        //    for (i=1; i<sizeof(TREE_DATAS) / sizeof(long); i++) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
         
@@ -34,35 +33,41 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 }
 
 void add_node(treenode_t *root, treenode_t *new_node) {
+    //    printf("new_node key =%d, root-key=%d\n", new_node->key, root->key);
 
     if (new_node->key > root->key) {
         if (root->right_child != NULL) {
             add_node(root->right_child, new_node);
         } else {
             root->right_child = new_node;
+            new_node->parent = root;
         }
-    } else {
+    } else if (new_node->key < root->key) {
         if (root->left_child != NULL) {
             add_node(root->left_child, new_node);
         } else {
             root->left_child = new_node;
+            new_node->parent = root;
         }
-    }
+    } 
 }
 
 
 treenode_t* tree_node_create(void* data) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
-    node->data = *(long *)data;
+    node->data = data;
     node->left_child = NULL;
     node->right_child = NULL;
+    node->parent = NULL;
 }
 
 treenode_t* tree_node_create_with_key(long key) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
+    printf("create node with key %ld \n", key);
     node->key = key;
     node->left_child = NULL;
     node->right_child = NULL;
+    node->parent = NULL;
 }
 
 /** 
@@ -187,11 +192,32 @@ visit(root)
 */
 
 void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
-    treenode_t *cur = tree_root;
+    if (!tree_root)
+        return;
+    treenode_t *current = tree_root;
+    treenode_t *prev = NULL;
+    treenode_t *next = NULL;
     
-    //    while (true) {
+    while (current) {
+        // if we can go left
+        if (prev == current->parent) {
+            prev = current;       //prepare to go left
+            next = current->left_child;
+        }
+        // if left is empty and Pre is going from left, dump and prepare to go right
+        if (next == NULL || prev == current->left_child) {
+            pfcb_traversenode(current);
+            prev = current;
+            next = current->right_child;
+        }
+        // If we can't go right (leaf) and previous is right, prepare to go back to parent.
+        if (next == NULL || prev == current->right_child) {
+            prev = current;
+            next = current->parent;
+        }
         
-    //    }
+        current = next;
+    }
 }
 
 

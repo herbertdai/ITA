@@ -14,11 +14,13 @@ extern "C" {
 
 #include "unistd.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct _treenode_t
 {
  struct _treenode_t *left_child;
  struct _treenode_t *right_child;
+ struct _treenode_t *parent;
 
  union{
   void            *data;
@@ -113,6 +115,11 @@ void tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
      * Binary tree search a key
      */
     treenode_t * tree_search(treenode_t * tree_root, int key);
+
+/**
+ * traverse the three by compare the pointer.(prev, cur, next)
+ */
+void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_travese);
 
 #ifdef __cplusplus
 }

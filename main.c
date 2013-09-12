@@ -17,7 +17,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 1000000
+#define  ARRAY_SIZE 300
 
 int A[ARRAY_SIZE];
 
@@ -182,7 +182,8 @@ void testBSTree() {
     } else {
         printf(" Not found key:%d\n", key);
     }
-
+    
+    traverse_no_recurise(tree->root, my_treenode_key_traverse);
 
     tree_destroy(tree, NULL);
 }
@@ -204,7 +205,7 @@ int main(int *argc, int **argv)
 
    testBSTree();
    
-   printf("foo size =%d\n", sizeof(foo_));
+   printf("foo size =%lu\n", sizeof(foo_));
    return 1;
 }
 
