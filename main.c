@@ -185,6 +185,16 @@ void testBSTree() {
     
     traverse_no_recurise(tree->root, my_treenode_key_traverse);
 
+    treenode_t * max, * min;
+    max = tree_max(tree->root);
+    min = tree_min(tree->root);
+    printf("max = %ld\n min = %ld\n", max->key, min->key);
+
+    treenode_t * bigger = tree_successor(search_result);
+    printf("successor = %ld\n", (bigger!=NULL)?bigger->key:-1);
+    treenode_t * smaller = tree_predecessor(search_result);
+    printf("perdecessor = %ld\n", (smaller!=NULL)?smaller->key:-1);
+    
     tree_destroy(tree, NULL);
 }
  

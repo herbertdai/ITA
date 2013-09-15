@@ -63,7 +63,6 @@ treenode_t* tree_node_create(void* data) {
 
 treenode_t* tree_node_create_with_key(long key) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
-    printf("create node with key %ld \n", key);
     node->key = key;
     node->left_child = NULL;
     node->right_child = NULL;
@@ -218,6 +217,74 @@ void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
         
         current = next;
     }
+
+
 }
 
+treenode_t * tree_min(treenode_t * tree_root) {
+    if (tree_root == NULL) {
+        return NULL;
+    }
+    
+    treenode_t * cur = tree_root;
+    
+    while (cur->left_child != NULL) {
+        cur = cur->left_child;
+    }
+    return cur;
+}
+
+treenode_t * tree_max(treenode_t * tree_root) {
+    if (tree_root == NULL) {
+        return NULL;
+    }
+    
+    treenode_t * cur = tree_root;
+    
+    while (cur->right_child != NULL) {
+        cur = cur->right_child;
+    }
+    return cur;
+}
+
+treenode_t * tree_successor(treenode_t * root){
+    if (root == NULL) {
+        printf("Tree is null.\n");
+        return NULL;
+    }
+        
+    treenode_t * ynode = NULL;
+
+    if (root->right_child != NULL) {
+        return tree_min(root->right_child);
+    }
+
+    ynode = root->parent;
+    while (ynode && ynode->right_child == root) {
+        root = ynode;
+        ynode = ynode->parent;
+    }
+    return ynode;
+}
+
+treenode_t * tree_predecessor(treenode_t * root){
+    if (root == NULL) {
+        printf("Tree is null.\n");
+        return NULL;
+    }
+        
+    treenode_t * ynode = NULL;
+    
+    if (root->left_child != NULL) {
+        return tree_max(root->left_child);
+    }
+    
+    ynode = root->parent;
+    while (ynode && ynode->right_child == root) {
+        root = ynode;
+        ynode = ynode->parent;
+    }
+
+    return ynode;
+}
 

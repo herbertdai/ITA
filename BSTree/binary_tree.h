@@ -121,6 +121,23 @@ void tree_node_free(treenode_t* node, pfunc_tree_callback  pfcb_freedata);
  */
 void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_travese);
 
+
+/**
+ * Get the minimum node of the tree
+ */
+treenode_t * tree_min(treenode_t * tree_root);
+
+/**
+ * Get the maximum node of the tree
+ */
+treenode_t * tree_max(treenode_t * tree_root);
+
+treenode_t * tree_successor(treenode_t * tree_root);
+
+treenode_t * tree_predecessor(treenode_t * tree_root);
+
+//////////////////////////////////////////////////////////////////////
+
 #ifdef __cplusplus
 }
 #endif
