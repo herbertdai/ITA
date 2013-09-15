@@ -85,9 +85,14 @@ tree_t* tree_create();
     tree_t* tree_create(int * TREE_DATAS, int data_size);
 
 /**
- * Add node to a properiate position, smaller to left, bigger to right
+ * Add node to a propreiate position, smaller to left, bigger to right. recursion.
  */
 void add_node(treenode_t *root, treenode_t *new_node);
+
+    /**
+     * Insert a node to a propreiate position none-recursion.
+     */
+    void tree_insert(tree_t * tree, treenode_t * z);
 
 /** 
  * Clears a tree and free memory, the tree cannot be used later

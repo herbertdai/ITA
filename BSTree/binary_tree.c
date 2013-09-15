@@ -26,7 +26,8 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
         
-        add_node(this_tree->root, new_node);
+                add_node(this_tree->root, new_node);
+        //        tree_insert(this_tree, new_node);
     }
 
     return this_tree;
@@ -52,6 +53,34 @@ void add_node(treenode_t *root, treenode_t *new_node) {
     } 
 }
 
+void tree_insert(tree_t * tree, treenode_t * z) {
+    treenode_t * y = z;
+    treenode_t * x = tree->root;
+    
+    // Track the z's position and it's parent:y
+    while (x != NULL) {
+        y = x;
+        if (z->key < x->key) {
+            x = x->left_child;
+        } else {
+            x = x->right_child;
+        }
+    }
+    printf("find pos: x = %p, key=%ld\n", y, z->key);
+
+    // Set the z's field.
+    z->parent = y;
+    if (y == NULL) {
+        tree->root = z;
+    } else {
+        if (z->key < y->key) {
+            y->left_child = z;
+        } else {
+            y->right_child = z;
+        }
+    }
+
+}
 
 treenode_t* tree_node_create(void* data) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
