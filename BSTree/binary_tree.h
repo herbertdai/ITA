@@ -89,10 +89,17 @@ tree_t* tree_create();
  */
 void add_node(treenode_t *root, treenode_t *new_node);
 
-    /**
-     * Insert a node to a propreiate position none-recursion.
-     */
-    void tree_insert(tree_t * tree, treenode_t * z);
+/**
+ * Insert a node to a propreiate position none-recursion.
+ * @param[in] z the node to insert
+ */
+void tree_insert(tree_t * tree, treenode_t * z);
+
+/**
+ * Delete a node in tree.
+ * @return the node deleted.
+ */
+treenode_t * tree_delete(tree_t * tree, treenode_t * z);
 
 /** 
  * Clears a tree and free memory, the tree cannot be used later

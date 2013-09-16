@@ -26,8 +26,8 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
         
-                add_node(this_tree->root, new_node);
-        //        tree_insert(this_tree, new_node);
+        add_node(this_tree->root, new_node);
+        //tree_insert(this_tree, new_node);
     }
 
     return this_tree;
@@ -36,7 +36,7 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 void add_node(treenode_t *root, treenode_t *new_node) {
     //    printf("new_node key =%d, root-key=%d\n", new_node->key, root->key);
 
-    if (new_node->key > root->key) {
+    if (new_node->key >= root->key) {
         if (root->right_child != NULL) {
             add_node(root->right_child, new_node);
         } else {
@@ -79,6 +79,49 @@ void tree_insert(tree_t * tree, treenode_t * z) {
             y->right_child = z;
         }
     }
+}
+
+treenode_t * tree_delete(tree_t * tree, treenode_t * z) {
+    if (z == NULL) {
+        return NULL;
+    }
+
+    treenode_t * y = NULL;
+    treenode_t * x = NULL;
+
+    // Find the place (y) to delete:
+    if ((z->left_child != NULL) || (z->right_child != NULL)) {
+        y = z;
+    } else {
+        y = tree_successor(z);
+    }
+    
+    // Set the node (x) next to y:
+    if (y->left_child != NULL) {
+        x = y->left_child;
+    } else {
+        x = y->right_child;
+    }
+    
+    // skip y
+    if (x) {
+        x->parent = y->parent;
+    }
+    if (y->parent == NULL) {
+        tree->root = x;
+    } else {
+        if (y == y->parent->left_child) {
+            y->parent->left_child = x;
+        } else { //y == y->parent->right_child
+            y->parent->right_child = x;
+        }
+    }
+    // if y != z, copy y to z 
+    if (y != z) {
+        z->key = y->key;
+        //TODO: Copy y's satellite date to z.
+    }
+    return y;
 
 }
 
@@ -309,7 +352,7 @@ treenode_t * tree_predecessor(treenode_t * root){
     }
     
     ynode = root->parent;
-    while (ynode && ynode->right_child == root) {
+    while (ynode && ynode->left_child == root) {
         root = ynode;
         ynode = ynode->parent;
     }
