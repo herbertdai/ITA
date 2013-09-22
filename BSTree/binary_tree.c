@@ -90,7 +90,7 @@ treenode_t * tree_delete(tree_t * tree, treenode_t * z) {
     treenode_t * x = NULL;
 
     // Find the place (y) to delete:
-    if ((z->left_child != NULL) || (z->right_child != NULL)) {
+    if ((z->left_child == NULL) || (z->right_child == NULL)) {
         y = z;
     } else {
         y = tree_successor(z);
