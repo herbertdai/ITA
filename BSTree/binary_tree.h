@@ -16,18 +16,22 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 
+#define RED 0
+#define BLACK 1
+
 typedef struct _treenode_t
 {
- struct _treenode_t *left_child;
- struct _treenode_t *right_child;
- struct _treenode_t *parent;
+    struct _treenode_t *left_child;
+    struct _treenode_t *right_child;
+    struct _treenode_t *parent;
+    char color;
 
- union{
-  void            *data;
-  struct _tree_t *tree;
-  const char  *str;
-  long             key;
- };
+    union{
+        void            *data;
+        struct _tree_t *tree;
+        const char  *str;
+        long             key;
+    };
 }treenode_t;
 
 typedef struct _tree_t
@@ -59,7 +63,7 @@ static void my_treenode_data_free(treenode_t *node)
  */
 static void my_treenode_key_traverse(treenode_t *node)
 {
- printf("    key=%ld\n", node->key);
+ printf("    key=%ld", node->key);
 }
 
 /**

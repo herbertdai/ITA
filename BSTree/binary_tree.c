@@ -7,6 +7,8 @@
 
 #include "binary_tree.h"
 
+static treenode_t * gNil;
+
 /**
  * Allocates a empty tree from heap, this creates a new tree 
  */
@@ -22,6 +24,8 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
     treenode_t * new_node = tree_node_create_with_key(TREE_DATAS[0]);        
     this_tree->root = new_node;
     
+    gNil = tree_node_create_with_key(0);
+    
     for (i=1; i<data_size; i++) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
@@ -29,7 +33,7 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
         add_node(this_tree->root, new_node);
         //tree_insert(this_tree, new_node);
     }
-
+    
     return this_tree;
 }
 
@@ -139,6 +143,7 @@ treenode_t* tree_node_create_with_key(long key) {
     node->left_child = NULL;
     node->right_child = NULL;
     node->parent = NULL;
+    return node;
 }
 
 /** 
@@ -149,6 +154,11 @@ void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata) {
     tree_clean(in_tree->root, pfcb_freedata);
     //TODO: free tree itself. dwy
     free(in_tree);
+    
+    if (gNil) {
+        free(gNil);
+        gNil = NULL;
+    }
 
     printf("Tree destory.\n");
 }
