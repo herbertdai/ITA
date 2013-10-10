@@ -185,6 +185,8 @@ void testBSTree() {
         printf(" Not found key:%d\n", key);
     }
     
+    tree_left_rotate(tree, search_result);
+
     traverse_no_recurise(tree->root, my_treenode_key_traverse);
 
     treenode_t * max, * min;

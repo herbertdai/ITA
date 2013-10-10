@@ -16,6 +16,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 
+#define DEBUG 1
 #define RED 0
 #define BLACK 1
 
@@ -151,6 +152,12 @@ treenode_t * tree_max(treenode_t * tree_root);
 treenode_t * tree_successor(treenode_t * tree_root);
 
 treenode_t * tree_predecessor(treenode_t * tree_root);
+
+//////////////////////////////////////
+// RED BLACK tree
+//////////////////////////////////////
+void tree_left_rotate(tree_p T, treenode_t * x);
+void tree_right_rotate(tree_p T, treenode_t * x);
 
 //////////////////////////////////////////////////////////////////////
 

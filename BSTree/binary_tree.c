@@ -16,15 +16,13 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 
     int i = 0;
 
-    //    long  TREE_DATAS[10] = {0, 8, 2, 5, 4, 7, 1, 6, 3, 9}; 
-
     tree_t* this_tree = (tree_t*)malloc (sizeof(tree_t));
+
+    gNil = tree_node_create_with_key(0);
     
     // init root node:
     treenode_t * new_node = tree_node_create_with_key(TREE_DATAS[0]);        
     this_tree->root = new_node;
-    
-    gNil = tree_node_create_with_key(0);
     
     for (i=1; i<data_size; i++) {
 
@@ -37,18 +35,21 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
     return this_tree;
 }
 
+/**
+ * Recruisive insert
+ */
 void add_node(treenode_t *root, treenode_t *new_node) {
     //    printf("new_node key =%d, root-key=%d\n", new_node->key, root->key);
 
     if (new_node->key >= root->key) {
-        if (root->right_child != NULL) {
+        if (root->right_child != gNil) {
             add_node(root->right_child, new_node);
         } else {
             root->right_child = new_node;
             new_node->parent = root;
         }
     } else if (new_node->key < root->key) {
-        if (root->left_child != NULL) {
+        if (root->left_child != gNil) {
             add_node(root->left_child, new_node);
         } else {
             root->left_child = new_node;
@@ -57,6 +58,9 @@ void add_node(treenode_t *root, treenode_t *new_node) {
     } 
 }
 
+/**
+ * Non-Recruisive insert
+ */
 void tree_insert(tree_t * tree, treenode_t * z) {
     treenode_t * y = z;
     treenode_t * x = tree->root;
@@ -140,9 +144,10 @@ treenode_t* tree_node_create(void* data) {
 treenode_t* tree_node_create_with_key(long key) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
     node->key = key;
-    node->left_child = NULL;
-    node->right_child = NULL;
-    node->parent = NULL;
+    node->left_child = gNil;
+    node->right_child = gNil;
+    node->parent = gNil;
+    node->color = BLACK;
     return node;
 }
 
@@ -152,7 +157,6 @@ treenode_t* tree_node_create_with_key(long key) {
 void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata) {
 
     tree_clean(in_tree->root, pfcb_freedata);
-    //TODO: free tree itself. dwy
     free(in_tree);
     
     if (gNil) {
@@ -235,12 +239,14 @@ int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
         pfcb_traversenode(tree_root);
 
     //    printf("Clean node=%p\n", tree_root);
-    free(tree_root);
+    if (tree_root != gNil) {
+        free(tree_root);
+    }
 }
 
 treenode_t * tree_search(treenode_t * tree_root, int key) {
     
-    if (tree_root == NULL || tree_root->key == key) {
+    if (tree_root == gNil || tree_root->key == key) {
         return tree_root;
     }
 
@@ -276,8 +282,8 @@ void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
     if (!tree_root)
         return;
     treenode_t *current = tree_root;
-    treenode_t *prev = NULL;
-    treenode_t *next = NULL;
+    treenode_t *prev = gNil;
+    treenode_t *next = gNil;
     
     while (current) {
         // if we can go left
@@ -286,13 +292,13 @@ void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
             next = current->left_child;
         }
         // if left is empty and Pre is going from left, dump and prepare to go right
-        if (next == NULL || prev == current->left_child) {
+        if (next == gNil || prev == current->left_child) {
             pfcb_traversenode(current);
             prev = current;
             next = current->right_child;
         }
         // If we can't go right (leaf) and previous is right, prepare to go back to parent.
-        if (next == NULL || prev == current->right_child) {
+        if (next == gNil || prev == current->right_child) {
             prev = current;
             next = current->parent;
         }
@@ -304,40 +310,40 @@ void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
 }
 
 treenode_t * tree_min(treenode_t * tree_root) {
-    if (tree_root == NULL) {
-        return NULL;
+    if (tree_root == gNil) {
+        return gNil;
     }
     
     treenode_t * cur = tree_root;
     
-    while (cur->left_child != NULL) {
+    while (cur->left_child != gNil) {
         cur = cur->left_child;
     }
     return cur;
 }
 
 treenode_t * tree_max(treenode_t * tree_root) {
-    if (tree_root == NULL) {
+    if (tree_root == gNil) {
         return NULL;
     }
     
     treenode_t * cur = tree_root;
     
-    while (cur->right_child != NULL) {
+    while (cur->right_child != gNil) {
         cur = cur->right_child;
     }
     return cur;
 }
 
 treenode_t * tree_successor(treenode_t * root){
-    if (root == NULL) {
+    if (root == gNil) {
         printf("Tree is null.\n");
-        return NULL;
+        return gNil;
     }
         
-    treenode_t * ynode = NULL;
+    treenode_t * ynode = gNil;
 
-    if (root->right_child != NULL) {
+    if (root->right_child != gNil) {
         return tree_min(root->right_child);
     }
 
@@ -350,14 +356,14 @@ treenode_t * tree_successor(treenode_t * root){
 }
 
 treenode_t * tree_predecessor(treenode_t * root){
-    if (root == NULL) {
+    if (root == gNil) {
         printf("Tree is null.\n");
-        return NULL;
+        return gNil;
     }
         
-    treenode_t * ynode = NULL;
+    treenode_t * ynode = gNil;
     
-    if (root->left_child != NULL) {
+    if (root->left_child != gNil) {
         return tree_max(root->left_child);
     }
     
@@ -369,4 +375,43 @@ treenode_t * tree_predecessor(treenode_t * root){
 
     return ynode;
 }
+
+//////////////////////////////////////
+// RED BLACK tree
+//////////////////////////////////////
+void tree_left_rotate(tree_p T, treenode_t * x) {
+    if (DEBUG) printf("tree left rotate with node:%p\n", x);
+
+    if (!T || !x) 
+        return;
+    
+    // Make sure x's right is not nil[T]
+    if (x->right_child == gNil) {
+        return;
+    }
+
+    treenode_t *y = x->right_child;
+    x->right_child = y->left_child;
+    
+    if (y->left_child != gNil) {
+        y->left_child->parent = x;
+    }
+    y->parent = x->parent;
+
+    if (x->parent == gNil) {
+        T->root = y;
+    } else {
+        if (x == x->parent->left_child) {
+            x->parent->left_child = y;
+        } else {
+            x->parent->right_child = y;
+        }
+    } 
+    y->left_child = x;
+    x->parent = y;
+
+    if (DEBUG) printf("end of tree left rotate with node:%p\n", x);
+}
+
+void tree_right_rotate(tree_p T, treenode_t * x) {}
 
