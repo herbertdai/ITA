@@ -205,13 +205,9 @@ int  tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_tra
 
 }
 
-static int s_tree_height = 0;
-
 int  tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
     if (gNil == tree_root) 
         return -1;
-
-    s_tree_height ++;
 
       //Visit left child
     tree_inorder_traverse(tree_root->left_child, pfcb_traversenode);
@@ -222,12 +218,14 @@ int  tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_trave
 
     //Visit right child
     tree_inorder_traverse(tree_root->right_child, pfcb_traversenode);
+
 }
 
 int get_tree_height(treenode_t *tree_root) {
-    s_tree_height = 0; 
-    tree_inorder_traverse(tree_root, NULL);
-    return s_tree_height;
+    if (tree_root == gNil) 
+        return -1;
+
+    return MAX(get_tree_height(tree_root->left_child), get_tree_height(tree_root->right_child)) + 1; 
 }
 
 

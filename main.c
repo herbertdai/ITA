@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 #include "randomize/gen_rand_array.h"
 #include "sorts/quick_sort/quick_sort.h"
@@ -17,7 +18,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 100
+#define  ARRAY_SIZE 200
 
 int A[ARRAY_SIZE];
 
