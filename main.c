@@ -176,34 +176,43 @@ void testBSTree() {
 
     int key = 50;
     startProfileTime();
+
     treenode_t * search_result = tree_search(tree->root, key);
     endProfileTime("Binary tree search");
     
-    if (search_result != NULL) {
+    if (search_result != get_nil_node()) {
         printf("Found key:%d\n", key);
     } else {
         printf(" Not found key:%d\n", key);
     }
     
     tree_left_rotate(tree, search_result);
+    tree_right_rotate(tree, search_result);
 
     traverse_no_recurise(tree->root, my_treenode_key_traverse);
 
     treenode_t * max, * min;
     max = tree_max(tree->root);
     min = tree_min(tree->root);
-    printf("max = %ld\n min = %ld\n", max->key, min->key);
+    printf("\nmax = %ld\n min = %ld\n", max->key, min->key);
 
     treenode_t * bigger = tree_successor(search_result);
-    printf("successor = %ld\n", (bigger!=NULL)?bigger->key:-1);
+    printf("successor = %ld\n", (bigger!=NULL) ? bigger->key : -1);
     treenode_t * smaller = tree_predecessor(search_result);
-    printf("perdecessor = %ld\n", (smaller!=NULL)?smaller->key:-1);
+    printf("perdecessor = %ld\n", (smaller!=NULL) ? smaller->key : -1);
     
     //Test delete:
     treenode_t * deleted_node = tree_delete(tree, search_result);
-    printf("del %p, key=%ld from tree.\n", deleted_node, deleted_node->key);
+    if (deleted_node)
+        printf("del %p, key=%ld from tree.\n", deleted_node, deleted_node->key);
     tree_inorder_traverse(tree->root, my_treenode_key_traverse);
+    //    traverse_no_recurise(tree->root, my_treenode_key_traverse);
     
+    get_tree_height(tree->root);
+    int height = get_tree_height(tree->root);
+    
+    printf("\nget tree h = %d\n", height);
+ 
     tree_destroy(tree, NULL);
 }
  

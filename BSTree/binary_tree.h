@@ -153,11 +153,20 @@ treenode_t * tree_successor(treenode_t * tree_root);
 
 treenode_t * tree_predecessor(treenode_t * tree_root);
 
+int get_tree_height(treenode_t *tree_root);
+
+treenode_t * get_nil_node();
+
 //////////////////////////////////////
 // RED BLACK tree
 //////////////////////////////////////
 void tree_left_rotate(tree_p T, treenode_t * x);
 void tree_right_rotate(tree_p T, treenode_t * x);
+
+void RBTree_insert(tree_t *T, treenode_t *z);
+void RBTree_insert_fixup(tree_t *T, treenode_t *z);
+void RBTree_delete(tree_t *T, treenode_t *z);
+void RBTree_delete_fixup(tree_t *T, treenode_t *z);
 
 //////////////////////////////////////////////////////////////////////
 

@@ -90,22 +90,22 @@ void tree_insert(tree_t * tree, treenode_t * z) {
 }
 
 treenode_t * tree_delete(tree_t * tree, treenode_t * z) {
-    if (z == NULL) {
+    if (z == gNil) {
         return NULL;
     }
 
-    treenode_t * y = NULL;
-    treenode_t * x = NULL;
+    treenode_t * y = gNil;
+    treenode_t * x = gNil;
 
     // Find the place (y) to delete:
-    if ((z->left_child == NULL) || (z->right_child == NULL)) {
+    if ((z->left_child == gNil) || (z->right_child == gNil)) {
         y = z;
     } else {
         y = tree_successor(z);
     }
     
     // Set the node (x) next to y:
-    if (y->left_child != NULL) {
+    if (y->left_child != gNil) {
         x = y->left_child;
     } else {
         x = y->right_child;
@@ -115,7 +115,7 @@ treenode_t * tree_delete(tree_t * tree, treenode_t * z) {
     if (x) {
         x->parent = y->parent;
     }
-    if (y->parent == NULL) {
+    if (y->parent == gNil) {
         tree->root = x;
     } else {
         if (y == y->parent->left_child) {
@@ -136,9 +136,9 @@ treenode_t * tree_delete(tree_t * tree, treenode_t * z) {
 treenode_t* tree_node_create(void* data) {
     treenode_t * node = (treenode_t*) malloc(sizeof(treenode_t));
     node->data = data;
-    node->left_child = NULL;
-    node->right_child = NULL;
-    node->parent = NULL;
+    node->left_child = gNil;
+    node->right_child = gNil;
+    node->parent = gNil;
 }
 
 treenode_t* tree_node_create_with_key(long key) {
@@ -172,7 +172,7 @@ void tree_destroy(tree_t *in_tree, pfunc_tree_callback  pfcb_freedata) {
  * Traverses a tree in root first older, applied callback functionn for each node
  */
 int  tree_preorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
-    if (NULL == tree_root) 
+    if (gNil == tree_root) 
         return -1;
 
      //Visit the root
@@ -190,7 +190,7 @@ int  tree_preorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_trav
  * Traverses a tree in root last older, applied callback functionn for each node
  */
 int  tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
-    if (NULL == tree_root) 
+    if (gNil == tree_root) 
         return -1;
 
       //Visit left child
@@ -205,9 +205,13 @@ int  tree_postorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_tra
 
 }
 
+static int s_tree_height = 0;
+
 int  tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
-    if (NULL == tree_root) 
+    if (gNil == tree_root) 
         return -1;
+
+    s_tree_height ++;
 
       //Visit left child
     tree_inorder_traverse(tree_root->left_child, pfcb_traversenode);
@@ -218,14 +222,20 @@ int  tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_trave
 
     //Visit right child
     tree_inorder_traverse(tree_root->right_child, pfcb_traversenode);
-
 }
+
+int get_tree_height(treenode_t *tree_root) {
+    s_tree_height = 0; 
+    tree_inorder_traverse(tree_root, NULL);
+    return s_tree_height;
+}
+
 
 /**
  * Traverses a tree and clean every node, applied callback function for each node for free the memory if needed.
  */
 int  tree_clean(treenode_t *tree_root, pfunc_tree_callback pfcb_traversenode) {
-    if (NULL == tree_root) 
+    if (gNil == tree_root) 
         return -1;
 
     //Visit left child
@@ -285,7 +295,7 @@ void traverse_no_recurise(treenode_t *tree_root, pfunc_tree_callback pfcb_traver
     treenode_t *prev = gNil;
     treenode_t *next = gNil;
     
-    while (current) {
+    while (current != gNil) {
         // if we can go left
         if (prev == current->parent) {
             prev = current;       //prepare to go left
@@ -382,16 +392,17 @@ treenode_t * tree_predecessor(treenode_t * root){
 void tree_left_rotate(tree_p T, treenode_t * x) {
     if (DEBUG) printf("tree left rotate with node:%p\n", x);
 
-    if (!T || !x) 
+    if (!T || !x || x == gNil) 
         return;
     
     // Make sure x's right is not nil[T]
     if (x->right_child == gNil) {
+        if (DEBUG) printf("x's right is null, no need to do left rotate\n");
         return;
     }
 
-    treenode_t *y = x->right_child;
-    x->right_child = y->left_child;
+    treenode_t *y = x->right_child; // Set y
+    x->right_child = y->left_child; // Turn y's left subtree into x's right subtree
     
     if (y->left_child != gNil) {
         y->left_child->parent = x;
@@ -413,5 +424,89 @@ void tree_left_rotate(tree_p T, treenode_t * x) {
     if (DEBUG) printf("end of tree left rotate with node:%p\n", x);
 }
 
-void tree_right_rotate(tree_p T, treenode_t * x) {}
+void tree_right_rotate(tree_p T, treenode_t * y) {
+    if (DEBUG) printf("tree right rotate with node:%p\n", y);
+    
+    if (!T || !y || y == gNil) 
+        return;
+
+    // Make sure y's left is not nil[T]
+    if (y->left_child == gNil) {
+        if (DEBUG) printf("y's left is null, no need to do left rotate\n");
+        return;
+    }
+
+    treenode_t *x = y->left_child;
+    y->left_child = x->right_child; // Turn x's right tree to y's left tree
+    
+    if (x->right_child != gNil) {
+        x->right_child->parent = y;
+    }
+    x->parent = y->parent;
+
+    if (x->parent == gNil) {
+        T->root = x;
+    } else {
+        if (y == y->parent->left_child) {
+            y->parent->left_child = x;
+        } else {
+            y->parent->right_child = x;
+        }
+    }
+
+    x->right_child = y;
+    y->parent = x;
+
+    if (DEBUG) printf("endof tree right rotate with node:%p\n", x);
+}
+
+void RBTree_insert(tree_t *T, treenode_t *z){
+    if (!T || !z) {
+        return;
+    }
+
+    treenode_t *y = gNil;
+    treenode_t *x = T->root;
+    
+    // Track the z's position and it's parent:y
+    while (x != gNil) {
+        y = x;
+        if (z->key < x->key) {
+            x = x->left_child;
+        } else {
+            x = x->right_child;
+        }
+    }
+    printf("find pos: x = %p, key=%ld\n", y, z->key);
+
+    // Set the z's field.
+    z->parent = y;
+    if (y == gNil) {
+        T->root = z;
+    } else {
+        if (z->key < y->key) {
+            y->left_child = z;
+        } else {
+            y->right_child = z;
+        }
+    }
+
+    z->left_child = gNil;
+    z->right_child = gNil;
+    z->color = RED;
+
+    RBTree_insert_fixup(T, z);
+}
+
+void RBTree_delete(tree_t *T, treenode_t *z){
+
+}
+
+void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
+
+}
+
+treenode_t * get_nil_node() {
+    return gNil;
+}
 
