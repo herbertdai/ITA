@@ -21,7 +21,7 @@ int randomize_in_place(int* Array, int lenth)
     for (i=0; i<lenth; i++){
         //Swap a[i] and a[random(i,n)]
         temp = Array[i];
-        random_index = (int)(rand() % (lenth - i));
+        random_index = (int)(rand()  % (lenth - 1));
         Array[i] = Array[random_index];
         Array[random_index] = temp;
     }

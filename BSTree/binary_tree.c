@@ -15,20 +15,23 @@ static treenode_t * gNil;
 tree_t* tree_create(int * TREE_DATAS, int data_size) {
 
     int i = 0;
+    gNil = tree_node_create_with_key(0);
+    gNil->left_child = NULL;
+    gNil->right_child = NULL;
+    gNil->parent = NULL;
+    gNil->key = -1;
 
     tree_t* this_tree = (tree_t*)malloc (sizeof(tree_t));
-
-    gNil = tree_node_create_with_key(0);
-    
-    // init root node:
-    treenode_t * new_node = tree_node_create_with_key(TREE_DATAS[0]);        
+    treenode_t * new_node = tree_node_create_with_key(TREE_DATAS[0]);
     this_tree->root = new_node;
+    this_tree->root->color = BLACK;
     
     for (i=1; i<data_size; i++) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
         
-        add_node(this_tree->root, new_node);
+        //        add_node(this_tree->root, new_node);
+        RBTree_insert(this_tree, new_node);
         //tree_insert(this_tree, new_node);
     }
     
@@ -388,7 +391,6 @@ treenode_t * tree_predecessor(treenode_t * root){
 // RED BLACK tree
 //////////////////////////////////////
 void tree_left_rotate(tree_p T, treenode_t * x) {
-    if (DEBUG) printf("tree left rotate with node:%p\n", x);
 
     if (!T || !x || x == gNil) 
         return;
@@ -419,11 +421,10 @@ void tree_left_rotate(tree_p T, treenode_t * x) {
     y->left_child = x;
     x->parent = y;
 
-    if (DEBUG) printf("end of tree left rotate with node:%p\n", x);
 }
 
 void tree_right_rotate(tree_p T, treenode_t * y) {
-    if (DEBUG) printf("tree right rotate with node:%p\n", y);
+    //    if (DEBUG) printf("tree right rotate with node:%p\n", y);
     
     if (!T || !y || y == gNil) 
         return;
@@ -455,13 +456,14 @@ void tree_right_rotate(tree_p T, treenode_t * y) {
     x->right_child = y;
     y->parent = x;
 
-    if (DEBUG) printf("endof tree right rotate with node:%p\n", x);
+    //    if (DEBUG) printf("endof tree right rotate with node:%p\n", x);
 }
 
 void RBTree_insert(tree_t *T, treenode_t *z){
     if (!T || !z) {
         return;
     }
+    if (DEBUG) printf("RB insert %ld\n", z->key);
 
     treenode_t *y = gNil;
     treenode_t *x = T->root;
@@ -475,7 +477,7 @@ void RBTree_insert(tree_t *T, treenode_t *z){
             x = x->right_child;
         }
     }
-    printf("find pos: x = %p, key=%ld\n", y, z->key);
+    if (DEBUG) printf("find pos: x = %p, key=%ld\n", y, z->key);
 
     // Set the z's field.
     z->parent = y;
@@ -496,11 +498,57 @@ void RBTree_insert(tree_t *T, treenode_t *z){
     RBTree_insert_fixup(T, z);
 }
 
-void RBTree_delete(tree_t *T, treenode_t *z){
+void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
+    treenode_t *y = gNil;
 
+    while (z->parent->color == RED) {
+        if (DEBUG) {
+            printf (" z = %ld, z->parent->key = %ld\n", z->key, z->parent->key);
+        }
+        if (z->parent == z->parent->parent->left_child) {
+            y = z->parent->parent->right_child;
+            if (y->color == RED) { // case 1
+                if (DEBUG) printf("case 1\n");
+                z->parent->color = BLACK;
+                y->color = BLACK;
+                z->parent->parent->color = RED;
+                z = z->parent->parent;
+            } else {
+                if (z == z->parent->right_child) { // case 2
+                    if (DEBUG) printf("case 2\n");
+                    z = z->parent;
+                    tree_left_rotate(T, z);
+                }
+                if (DEBUG) printf("case 3\n");
+                z->parent->color = BLACK;                // case 3
+                z->parent->parent->color = RED;          // case 3
+                tree_right_rotate(T, z->parent->parent); // case 3
+            }
+        } else {
+            y = z->parent->parent->left_child;
+            if (y->color == RED) { // case 4
+                if (DEBUG) printf("case 4\n");
+                z->parent->color = BLACK;
+                y->color = BLACK;
+                z->parent->parent->color = RED;
+                z = z->parent->parent;
+            } else {
+                if (z == z->parent->left_child) { // case 5
+                    if (DEBUG) printf("case 5\n");
+                    z = z->parent;
+                    tree_right_rotate(T, z);
+                }
+                if (DEBUG) printf("case 6\n");
+                z->parent->color = BLACK;                // case 6
+                z->parent->parent->color = RED;          // case 6
+                tree_left_rotate(T, z->parent->parent); // case 6
+            }
+        }
+    }
+    T->root->color = BLACK;
 }
 
-void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
+void RBTree_delete(tree_t *T, treenode_t *z){
 
 }
 

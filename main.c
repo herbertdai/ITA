@@ -18,7 +18,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 200
+#define  ARRAY_SIZE 60
 
 int A[ARRAY_SIZE];
 
