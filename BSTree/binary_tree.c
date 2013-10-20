@@ -30,7 +30,7 @@ tree_t* tree_create(int * TREE_DATAS, int data_size) {
 
         new_node = tree_node_create_with_key(TREE_DATAS[i]);        
         
-        //        add_node(this_tree->root, new_node);
+        //                add_node(this_tree->root, new_node);
         RBTree_insert(this_tree, new_node);
         //tree_insert(this_tree, new_node);
     }
@@ -51,7 +51,7 @@ void add_node(treenode_t *root, treenode_t *new_node) {
             root->right_child = new_node;
             new_node->parent = root;
         }
-    } else if (new_node->key < root->key) {
+    } else {
         if (root->left_child != gNil) {
             add_node(root->left_child, new_node);
         } else {
@@ -225,10 +225,17 @@ int  tree_inorder_traverse(treenode_t *tree_root, pfunc_tree_callback pfcb_trave
 }
 
 int get_tree_height(treenode_t *tree_root) {
-    if (tree_root == gNil) 
+    if (tree_root == gNil || tree_root == NULL) 
         return -1;
 
-    return MAX(get_tree_height(tree_root->left_child), get_tree_height(tree_root->right_child)) + 1; 
+    int left_height = get_tree_height(tree_root->left_child);
+    int right_height = get_tree_height(tree_root->right_child);
+    if (left_height > right_height) {
+        return left_height + 1;
+    } else {
+        return right_height + 1;
+    }
+    //    return MAX(get_tree_height(tree_root->left_child), get_tree_height(tree_root->right_child)) + 1; 
 }
 
 

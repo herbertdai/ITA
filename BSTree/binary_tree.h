@@ -19,7 +19,7 @@ extern "C" {
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
-#define DEBUG 1
+#define DEBUG 0
 #define RED 0
 #define BLACK 1
 
@@ -67,7 +67,7 @@ static void my_treenode_data_free(treenode_t *node)
  */
 static void my_treenode_key_traverse(treenode_t *node)
 {
- printf("    key=%ld", node->key);
+    printf(" %p key=%ld", node, node->key);
 }
 
 /**

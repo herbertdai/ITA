@@ -18,7 +18,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 60
+#define  ARRAY_SIZE 6000
 
 int A[ARRAY_SIZE];
 
@@ -209,9 +209,7 @@ void testBSTree() {
     tree_inorder_traverse(tree->root, my_treenode_key_traverse);
     //    traverse_no_recurise(tree->root, my_treenode_key_traverse);
     
-    get_tree_height(tree->root);
     int height = get_tree_height(tree->root);
-    
     printf("\nget tree h = %d\n", height);
  
     tree_destroy(tree, NULL);
