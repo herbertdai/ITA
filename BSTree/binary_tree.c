@@ -556,7 +556,75 @@ void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
 }
 
 void RBTree_delete(tree_t *T, treenode_t *z){
+    if (z == NULL || z == gNil) {
+        return;
+    }
 
+    // Find the place (y) to delete:
+    if ((z->left_child == gNil) || (z->right_child == gNil)) {
+        y = z;
+    } else {
+        y = tree_successor(z);
+    }
+    
+    // Set the node (x) next to y:
+    if (y->left_child != gNil) {
+        x = y->left_child;
+    } else {
+        x = y->right_child;
+    }
+    
+    // skip y
+    x->parent = y->parent;
+
+    if (y->parent == gNil) {
+        tree->root = x;
+    } else {
+        if (y == y->parent->left_child) {
+            y->parent->left_child = x;
+        } else { //y == y->parent->right_child
+            y->parent->right_child = x;
+        }
+    }
+    // if y != z, copy y to z 
+    if (y != z) {
+        z->key = y->key;
+        //TODO: Copy y's satellite date to z.
+    }
+ 
+    if (y->color == BLACK) {
+        RBTree_delete_fixup(T, x);
+    }
+    
+    return y;
+
+}
+
+
+void RBTree_delete_fixup(tree_t *T, treenode_t *x) {
+    treenode_t * w = gNil;
+
+    while (x != T->root && x->color == BLACK) {
+        if (x == x->parent->left_child) {
+            w = x->parent->right_child;
+            
+            if (w->color == RED) {
+                //case 1
+            }
+            if (w->left_child->color == BLACK && w->right_child->color == BLACK) {
+                //case 2
+            } else {
+                if ( w->right_child->color == BLACK) {
+                    //case 3
+                }
+                //case 4
+            }
+
+        } else { // x == x->parent->right_child
+            
+        }
+        x->color = BLACK;
+    }
 }
 
 treenode_t * get_nil_node() {
