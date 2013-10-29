@@ -18,7 +18,7 @@
 #include "BSTree/binary_tree.h"
 
 
-#define  ARRAY_SIZE 6000
+#define  ARRAY_SIZE 100
 
 int A[ARRAY_SIZE];
 
@@ -203,7 +203,8 @@ void testBSTree() {
     printf("perdecessor = %ld\n", (smaller!=NULL) ? smaller->key : -1);
     
     //Test delete:
-    treenode_t * deleted_node = tree_delete(tree, search_result);
+        treenode_t * deleted_node = RBTree_delete(tree, search_result);
+        //    treenode_t * deleted_node = tree_delete(tree, search_result);
     if (deleted_node)
         printf("del %p, key=%ld from tree.\n", deleted_node, deleted_node->key);
     tree_inorder_traverse(tree->root, my_treenode_key_traverse);

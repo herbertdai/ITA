@@ -19,7 +19,7 @@ extern "C" {
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
-#define DEBUG 0
+#define DEBUG 1
 #define RED 0
 #define BLACK 1
 
@@ -168,7 +168,7 @@ void tree_right_rotate(tree_p T, treenode_t * x);
 
 void RBTree_insert(tree_t *T, treenode_t *z);
 void RBTree_insert_fixup(tree_t *T, treenode_t *z);
-void RBTree_delete(tree_t *T, treenode_t *z);
+treenode_t * RBTree_delete(tree_t *T, treenode_t *z);
 void RBTree_delete_fixup(tree_t *T, treenode_t *z);
 
 //////////////////////////////////////////////////////////////////////

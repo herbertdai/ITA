@@ -555,10 +555,15 @@ void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
     T->root->color = BLACK;
 }
 
-void RBTree_delete(tree_t *T, treenode_t *z){
+treenode_t * RBTree_delete(tree_t *T, treenode_t *z){
     if (z == NULL || z == gNil) {
         return;
     }
+    
+    if (DEBUG) printf("\nRBTree_delete\n");
+
+    treenode_t * y = gNil;
+    treenode_t * x = gNil;
 
     // Find the place (y) to delete:
     if ((z->left_child == gNil) || (z->right_child == gNil)) {
@@ -578,7 +583,7 @@ void RBTree_delete(tree_t *T, treenode_t *z){
     x->parent = y->parent;
 
     if (y->parent == gNil) {
-        tree->root = x;
+        T->root = x;
     } else {
         if (y == y->parent->left_child) {
             y->parent->left_child = x;
@@ -610,18 +615,58 @@ void RBTree_delete_fixup(tree_t *T, treenode_t *x) {
             
             if (w->color == RED) {
                 //case 1
+                w->color = BLACK;
+                tree_left_rotate(T, x->parent);
+                w = x->parent->right_child;
             }
             if (w->left_child->color == BLACK && w->right_child->color == BLACK) {
                 //case 2
+                w->color = RED;
+                x = x->parent;
             } else {
-                if ( w->right_child->color == BLACK) {
+                if ( w->right_child->color == BLACK) { //w->left_child->color == RED
                     //case 3
+                    w->left_child->color = BLACK;
+                    w->color= RED;
+                    tree_right_rotate(T, w);
+                    w=x->parent->right_child; // update new w
                 }
                 //case 4
+                w->color = x->parent->color;
+                x->parent->color = BLACK;
+                w->right_child->color = BLACK;
+                tree_left_rotate(T, x->parent);
+                x = T->root;
             }
 
         } else { // x == x->parent->right_child
+            w = x->parent->left_child;
             
+            if (w->color == RED) {
+                //case 5
+                w->color = BLACK;
+                tree_right_rotate(T, x->parent);
+                w = x->parent->left_child;
+            }
+            if (w->right_child->color == BLACK && w->left_child->color == BLACK) {
+                //case 2
+                w->color = RED;
+                x = x->parent;
+            } else {
+                if ( w->left_child->color == BLACK) { //w->right_child->color == RED
+                    //case 3
+                    w->right_child->color = BLACK;
+                    w->color= RED;
+                    tree_left_rotate(T, w);
+                    w=x->parent->left_child; // update new w
+                }
+                //case 4
+                w->color = x->parent->color;
+                x->parent->color = BLACK;
+                w->left_child->color = BLACK;
+                tree_right_rotate(T, x->parent);
+                x = T->root;
+            }
         }
         x->color = BLACK;
     }
