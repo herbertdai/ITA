@@ -16,8 +16,6 @@
 *.out
 *.app
 
-*.c~
-*.h~
-*.sh~
+*~
 TAGS
 ita

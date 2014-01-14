@@ -223,7 +223,7 @@ typedef struct foo {
     char c;
 }foo_;
 
-int main(int *argc, int **argv)
+int main(int argc, char **argv)
 {
    printf("Running ITAlgoritms>>>>>>>>>>>\n");
 

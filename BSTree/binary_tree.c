@@ -557,7 +557,7 @@ void RBTree_insert_fixup(tree_t *T, treenode_t *z) {
 
 treenode_t * RBTree_delete(tree_t *T, treenode_t *z){
     if (z == NULL || z == gNil) {
-        return;
+        return NULL;
     }
     
     if (DEBUG) printf("\nRBTree_delete\n");
